@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EagleRock.Database;
+using EagleRock.Cache;
 using EagleRock.Model;
 using EagleRock.Model.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace EagleRock.Controllers
 {
+    /// <summary>
+    /// Interface to allow EagleBots to submit their data
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class EagleBotController : ControllerBase
@@ -41,11 +46,17 @@ namespace EagleRock.Controllers
                 await _cacheInterface.StorePayload(payload);
                 _logger.LogDebug($"Successfully cached payload from EagleBot with Id: {payload.EagleBotId}");
             }
+            catch (RedisConnectionException e)
+            {
+                _logger.LogError("Failed to cache EagleBot payload - a connection to the cache could not be established", e);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable);
+            }
             catch (Exception e)
             {
-                //TODO catch more specific exceptions
-                _logger.LogError("Failed to cache EagleBot payload", e);
+                _logger.LogError("An unexpected error occured while trying to cache an EagleBot payload", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
+            
             return Ok();
         }
     }
