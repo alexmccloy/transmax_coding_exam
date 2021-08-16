@@ -1,20 +1,18 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+﻿#Build Image
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /src
-COPY ["EagleRock/EagleRock.csproj", "EagleRock/"]
-RUN dotnet restore "EagleRock/EagleRock.csproj"
-COPY . .
-WORKDIR "/src/EagleRock"
-RUN dotnet build "EagleRock.csproj" -c Release -o /app/build
+# Copy csproj file and restore
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish "EagleRock.csproj" -c Release -o /app/publish
+# Copy source code and then build
+COPY . ./
+RUN dotnet publish -c Release -o /app/publish
 
-FROM base AS final
+#Runtime Image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build-env /app/publish .
 ENTRYPOINT ["dotnet", "EagleRock.dll"]
