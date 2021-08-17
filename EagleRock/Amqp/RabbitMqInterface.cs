@@ -58,14 +58,28 @@ namespace EagleRock.Amqp
         
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await Task.Delay(30000);
-            _connection = _connectionFactory.CreateConnection();
+            // Repeatedly try to connect to rabbit (Note: in a production app this would not be a good solution since
+            // this blocks the app from starting until we are connected)
+            while (true)
+            {
+                try
+                {
+                    _connection = _connectionFactory.CreateConnection();
+                    break;
+                }
+                catch (BrokerUnreachableException)
+                {
+                    // We failed to connect, try again in 1 second
+                    await Task.Delay(1000, cancellationToken);
+                }
+            }
+            
             _channel = _connection.CreateModel();
             
             // Declare our exchange if it doesnt already exist
             try
             {
-                _channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic);
+                _channel.ExchangeDeclare(ExchangeName, ExchangeType.Topic, durable: true);
             }
             catch (OperationInterruptedException)
             {

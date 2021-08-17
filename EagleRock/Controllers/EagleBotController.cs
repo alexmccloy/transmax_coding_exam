@@ -63,7 +63,7 @@ namespace EagleRock.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("An unexpected error occured while trying to cache an EagleBot payload", e);
+                _logger.LogError($"An unexpected error occured while trying to cache an EagleBot payload: {e.Message}", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             
