@@ -55,9 +55,14 @@ namespace EagleRock.Controllers
                 _logger.LogError("Failed to retrieve EagleBot payload - a connection to the cache could not be established", e);
                 return StatusCode(StatusCodes.Status503ServiceUnavailable);
             }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogWarning($"Received request to retrieve EagleBot payload with id {eagleBotId} that does not exist in cache", e);
+                return NotFound();
+            }
             catch (Exception e)
             {
-                _logger.LogError($"An unexpected error occured while trying to retrieve an EagleBot payload with Id {eagleBotId}", e);
+                _logger.LogError($"An unexpected error occured while trying to retrieve an EagleBot payload with Id {eagleBotId}: {e.GetType()}{e.Message}", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

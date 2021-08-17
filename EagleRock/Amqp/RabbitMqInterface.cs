@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using EagleRock.Model;
