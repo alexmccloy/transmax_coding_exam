@@ -20,10 +20,10 @@ namespace EagleRock.Cache
         /// If this is not set data will expire after 1 day</param>
         /// <param name="unusedExpireTime">Time before the object expires if it is not used</param>
         public static async Task StoreDataAsJsonAsync<T>(this IDistributedCache cache,
-                                                   string recordId,
-                                                   T data,
-                                                   TimeSpan? absoluteExpireTime = null,
-                                                   TimeSpan? unusedExpireTime = null)
+                                                         string recordId,
+                                                         T data,
+                                                         TimeSpan? absoluteExpireTime = null,
+                                                         TimeSpan? unusedExpireTime = null)
         {
             var options = new DistributedCacheEntryOptions
             {

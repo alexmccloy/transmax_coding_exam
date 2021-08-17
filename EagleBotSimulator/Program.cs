@@ -9,13 +9,15 @@ namespace EagleBotSimulator
 {
     class Program
     {
-        private static HttpClient _httpClient = new HttpClient();
-        private static Random _random = new Random();
+        private static readonly HttpClient _httpClient = new HttpClient();
+        private static readonly Random _random = new Random();
         
         static async Task Main(string[] args)
         {
             var count = int.Parse(Environment.GetEnvironmentVariable("EagleBotSimulator_Count") ?? "5");
             var tasks = new List<Task>();
+            
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", "SampleApiKey12345");
 
             // Create tasks to loop and send random data forever
             for (int i = 0; i < count; i++)
@@ -41,9 +43,9 @@ namespace EagleBotSimulator
         {
             try
             {
-                var stringContent = new StringContent(CreateRandomData(id), Encoding.Default, "application/json");
+                var body = new StringContent(CreateRandomData(id), Encoding.Default, "application/json");
                 // await _httpClient.PostAsync("http://localhost:5000/api/eaglebot", stringContent);
-                await _httpClient.PostAsync("http://eaglerock:80/api/eaglebot", stringContent);
+                await _httpClient.PostAsync("http://eaglerock:80/api/eaglebot", body);
             }
             catch (Exception e)
             {

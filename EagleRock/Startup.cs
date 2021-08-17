@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EagleRock.Amqp;
 using EagleRock.Cache;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RabbitMQ.Client;
 using StackExchange.Redis;
 
 namespace EagleRock
@@ -46,7 +48,9 @@ namespace EagleRock
             
             //Register Dependencies
             services.AddSingleton<ICacheInterface, RedisInterface>()
-                    .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")));
+                    .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")))
+                    .AddSingleton<IConnectionFactory, ConnectionFactory>()
+                    .AddHostedSingleton<IAmqpInterface, RabbitMqInterface>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

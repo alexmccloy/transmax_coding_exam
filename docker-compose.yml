@@ -3,11 +3,22 @@ version: "3.9"
 services:
     eaglerock:
         build: EagleRock/
+        hostname: eaglerock
         ports:
-            - "5000:80"
+            - 5000:80
 
     eaglebotsim:
         build: EagleBotSimulator/
+        environment: 
+            - "EagleBotSimulator_Count=3"
     
     redis:
-        image: "redis"
+        image: redis
+        hostname: redis
+
+    rabbitmq:
+        build: RabbitMq/
+        hostname: rabbitmq
+        ports:
+            - 5672:5672
+            - 15672:15672

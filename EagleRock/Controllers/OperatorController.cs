@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EagleRock.Auth;
 using EagleRock.Cache;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace EagleRock.Controllers
         /// </summary>
         /// <param name="eagleBotId">The Id of the EagleBot to retrieve data for, or null for all data</param>
         [HttpGet]
+        [ApiKeyAuth]
         public async Task<IActionResult> Get(string eagleBotId = null)
         {
             try
