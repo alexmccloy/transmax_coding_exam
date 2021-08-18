@@ -21,3 +21,30 @@ containers will be created:
 - EagleBot Simulator
 - Redis (Exposes port `6397` to the host)
 - RabbitMQ (Exposes port `5672` to the host for AMQP and `15672` for management)
+
+# Postman Samples
+To send payloads to the **EagleBot interface** through Postman or similar tool create a request with the following:
+- URL: `localhost:5000/api/eaglebot`
+- Headers: `ApiKey` = `SampleApiKey12345`
+_(ApiKeys can be configured in appsettings.json of EagleRock server)_
+- Body Sample:
+```json
+{
+    "EagleBotId": "EagleBot-1",
+    "Timestamp": "2021-08-16T03:05:30.123123+10:00",
+    "Coordinates": {
+        "Latitude": -27.43932,
+        "Longitude": 153.06617
+    },
+    "StreetName" : "Kingsford Smith Drive",
+    "TrafficDirection": "Inbound",
+    "TrafficFlowRate": 123.456,
+    "AverageVehicleSpeed": 66.1
+}
+```
+
+To send requests to the **Operator interface** to view data currently in the cache create a request with the following
+- URL: `localhost:5000/api/operator`
+- Query Params: `eagleBotId` = `EagleBot-1` OR No params to see all payloads
+- Headers: `ApiKey` = `SampleApiKey12345`
+  _(ApiKeys can be configured in appsettings.json of EagleRock server)_
