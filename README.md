@@ -24,7 +24,7 @@ containers will be created:
 
 # Postman Samples
 To send payloads to the **EagleBot interface** through Postman or similar tool create a request with the following:
-- URL: `localhost:5000/api/eaglebot`
+- URL: `POST:localhost:5000/api/eaglebot`
 - Headers: `ApiKey` = `SampleApiKey12345`
 _(ApiKeys can be configured in appsettings.json of EagleRock server)_
 - Body Sample:
@@ -44,7 +44,7 @@ _(ApiKeys can be configured in appsettings.json of EagleRock server)_
 ```
 
 To send requests to the **Operator interface** to view data currently in the cache create a request with the following
-- URL: `localhost:5000/api/operator`
+- URL: `GET:localhost:5000/api/operator`
 - Query Params: `eagleBotId` = `EagleBot-1` OR No params to see all payloads
 - Headers: `ApiKey` = `SampleApiKey12345`
   _(ApiKeys can be configured in appsettings.json of EagleRock server)_
