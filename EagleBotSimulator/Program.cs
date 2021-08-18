@@ -44,7 +44,6 @@ namespace EagleBotSimulator
             try
             {
                 var body = new StringContent(CreateRandomData(id), Encoding.Default, "application/json");
-                // await _httpClient.PostAsync("http://localhost:5000/api/eaglebot", stringContent);
                 await _httpClient.PostAsync("http://eaglerock:80/api/eaglebot", body);
             }
             catch (Exception e)
@@ -55,17 +54,19 @@ namespace EagleBotSimulator
 
         private static string CreateRandomData(string id)
         {
-            return JsonConvert.SerializeObject(new {
-                eagleBotId= id,
-                timestamp= DateTime.Now,
-                coordinates= new {
-                    latitude= GetRandomDouble(-90,90),
-                    longitude= GetRandomDouble(-180,180)
+            return JsonConvert.SerializeObject(new
+            {
+                eagleBotId = id,
+                timestamp = DateTime.Now,
+                coordinates = new
+                {
+                    latitude = GetRandomDouble(-90, 90),
+                    longitude = GetRandomDouble(-180, 180)
                 },
-                streetName= "Kingsford Smith Drive",
-                trafficDirection= "Inbound",
-                trafficFlowRate= GetRandomDouble(0, 1000),
-                averageVehicleSpeed= GetRandomDouble(0, 200)
+                streetName = "Kingsford Smith Drive",
+                trafficDirection = "Inbound",
+                trafficFlowRate = GetRandomDouble(0, 1000),
+                averageVehicleSpeed = GetRandomDouble(0, 200)
             });
         }
         
